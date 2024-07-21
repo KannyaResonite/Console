@@ -1,6 +1,6 @@
 # Console
 
-A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that adds a console to RML, with logging mods' logs to separated files as a configurable option (on by dwfault)
+A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that adds a console to RML, with logging mods' logs to separated files as a configurable option (on by default)
 
 ![image](https://github.com/user-attachments/assets/60eb647e-57d2-4006-b4b7-fb0d52f8f4b8)
 
