@@ -37,7 +37,7 @@ namespace Console
             
             if (AllocConsole())
             {
-                StreamWriter writer = new StreamWriter(System.Console.OpenStandardOutput()) { AutoFlush = true };
+                var writer = new StreamWriter(System.Console.OpenStandardOutput()) { AutoFlush = true };
                 System.Console.SetOut(writer);
 
                 System.Console.Title = "Resonite | Kannya's Console";
