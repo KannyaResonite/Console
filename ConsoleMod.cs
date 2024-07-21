@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using HarmonyLib;
 using ResoniteModLoader;
 
@@ -27,10 +29,13 @@ namespace Console
         private static ModConfiguration Config;
 
         private static DateTime StartDate;
+
+        private static CultureInfo BothFormat;
         
         public override void OnEngineInit()
         {
             StartDate = DateTime.Now;
+            BothFormat = new CultureInfo(Thread.CurrentThread.CurrentCulture.ToString());
             
             Config = GetConfiguration();
             Config?.Save(true);
@@ -55,7 +60,10 @@ namespace Console
 
         public static void LogToConsole(string text)
         {
-            text = $"[{DateTime.Now:dd/MM/yyyy hh:mm:ss tt}] {text}"; // UK date layout as i'm from scotland, deal with it :)
+            var FormattedDate = DateTime.Now.ToString(BothFormat.DateTimeFormat.ShortDatePattern, BothFormat);
+            var FormattedTime = DateTime.Now.ToString(BothFormat.DateTimeFormat.ShortTimePattern, BothFormat);
+            
+            text = $"[{FormattedDate} ${FormattedTime}] {text}"; // UK date layout as i'm from scotland, deal with it :) // what if I dont wanna ?
             
             System.Console.WriteLine(text);
 
