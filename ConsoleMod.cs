@@ -52,7 +52,7 @@ namespace Console
                     
                     var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
                     
-                    loggerType = loadedAssemblies.FirstOrDefault(o => o?.GetType("ResoniteModLoader.Logger") != null)?.GetType("ResoniteModLoader.Logger") ?? loadedAssemblies.First(o => o.GetType("MonkeyLoader.Logging.Logger") != null).GetType("MonkeyLoader.Logging.Logger");
+                    loggerType = loadedAssemblies.FirstOrDefault(o => o?.GetType("ResoniteModLoader.Logger") != null)?.GetType("ResoniteModLoader.Logger") ?? loadedAssemblies.First(o => o.GetType("MonkeyLoader.Logging.LoggingController") != null).GetType("MonkeyLoader.Logging.LoggingController");
 
                     foreach (var logmethod in loggerType.GetMethods(AccessTools.all).Where(o => o.Name == "LogInternal"))
                     {
