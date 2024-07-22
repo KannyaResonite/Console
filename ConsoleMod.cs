@@ -124,7 +124,7 @@ namespace Console
                     break;
             }
             
-            LogToConsole($"{Enum.GetName(typeof(LoggingLevel), (LoggingLevel)__0)} [{__1}] {__2}");
+            LogToConsole($"{Enum.GetName(typeof(LoggingLevel), (LoggingLevel)__0)} [{__1}] {__2()}");
         }
 
         public static void LogToConsole(string text)
