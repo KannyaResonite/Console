@@ -15,6 +15,8 @@ namespace Console
         public override string Author => "Kannya";
         public override string Version => "1.0.0";
         
+        public override string Link => "https://github.com/KannyaResonite/Console/";
+        
         [AutoRegisterConfigKey]
         private static ModConfigurationKey<bool> LogToFile = new ModConfigurationKey<bool>("Log To File", "Whether console should forward the logged data into a txt file.", () => true);
         
