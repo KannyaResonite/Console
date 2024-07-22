@@ -95,38 +95,46 @@ namespace Console
             Trace = 2
         }
 
-        public static void MonkeyLogToConsoleMass(object __0, string __1, IEnumerable<Func<object>> __2)
+        private static LoggingLevel GetMonkeyLoggingLevel(object instance)
+        {
+            return (LoggingLevel)loggerType.GetProperty("Level", AccessTools.all).GetValue(instance);
+        }
+
+        public static void MonkeyLogToConsoleMass(object __instance, object __0, string __1, IEnumerable<Func<object>> __2)
         {
             foreach (var message in __2)
             {
-                MonkeyLogToConsole(__0, __1, message);
+                MonkeyLogToConsole(__instance, __0, __1, message);
             }
         }
         
-        public static void MonkeyLogToConsole(object __0, string __1, Func<object> __2)
+        public static void MonkeyLogToConsole(object __instance,object __0, string __1, Func<object> __2)
         {
-            switch ((LoggingLevel)__0)
+            if (GetMonkeyLoggingLevel(__instance) >= (LoggingLevel)__0)
             {
-                case LoggingLevel.Debug:
-                case LoggingLevel.Trace:
-                    System.Console.ForegroundColor = ConsoleColor.Cyan;
-                    break;
-                case LoggingLevel.Info:
-                    System.Console.ForegroundColor = ConsoleColor.Green;
-                    break;
-                case LoggingLevel.Warn:
-                    System.Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case LoggingLevel.Error:
-                case LoggingLevel.Fatal:
-                    System.Console.ForegroundColor = ConsoleColor.Red;
-                    break;
-                default:
-                    System.Console.ForegroundColor = ConsoleColor.White;
-                    break;
-            }
+                switch ((LoggingLevel)__0)
+                {
+                    case LoggingLevel.Debug:
+                    case LoggingLevel.Trace:
+                        System.Console.ForegroundColor = ConsoleColor.Cyan;
+                        break;
+                    case LoggingLevel.Info:
+                        System.Console.ForegroundColor = ConsoleColor.Green;
+                        break;
+                    case LoggingLevel.Warn:
+                        System.Console.ForegroundColor = ConsoleColor.Yellow;
+                        break;
+                    case LoggingLevel.Error:
+                    case LoggingLevel.Fatal:
+                        System.Console.ForegroundColor = ConsoleColor.Red;
+                        break;
+                    default:
+                        System.Console.ForegroundColor = ConsoleColor.White;
+                        break;
+                }
             
-            LogToConsole($"{Enum.GetName(typeof(LoggingLevel), (LoggingLevel)__0)} [{__1}] {__2()}");
+                LogToConsole($"{Enum.GetName(typeof(LoggingLevel), (LoggingLevel)__0)} [{__1}] {__2()}");
+            }
         }
 
         public static void LogToConsole(string text)
