@@ -32,6 +32,9 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
+    <PropertyGroup>
+      <PostBuildEvent>copy "C:\Users\krewe\RiderProjects\Console\Console\bin\Debug\!Console.dll" "Z:\SteamLibrary\steamapps\common\Resonite\rml_mods\!Console.dll"</PostBuildEvent>
+    </PropertyGroup>
     <ItemGroup>
         <Reference Include="0Harmony">
           <HintPath>Z:\SteamLibrary\steamapps\common\Resonite\rml_libs\0Harmony.dll</HintPath>

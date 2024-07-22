@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -44,15 +45,88 @@ namespace Console
 
                 System.Console.Title = "Resonite | Kannya's Console";
                 
-                var harmony = new Harmony("com.Kannya.Console");
-            
                 // reflection to get a internal sealed class, i hate it
-                loggerType = typeof(ResoniteMod).Assembly.GetType("ResoniteModLoader.Logger");
-            
-                harmony.Patch(loggerType.GetMethod("LogInternal", AccessTools.all), null, new HarmonyMethod(typeof(ConsoleMod).GetMethod(nameof(LogInternal), BindingFlags.Public | BindingFlags.Static)));
-            
-                Msg("Hello World!");
+                try
+                {
+                    var harmony = new Harmony("com.Kannya.Console");
+                    
+                    var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    
+                    loggerType = loadedAssemblies.FirstOrDefault(o => o?.GetType("ResoniteModLoader.Logger") != null)?.GetType("ResoniteModLoader.Logger") ?? loadedAssemblies.First(o => o.GetType("MonkeyLoader.Logging.Logger") != null).GetType("MonkeyLoader.Logging.Logger");
+
+                    foreach (var logmethod in loggerType.GetMethods(AccessTools.all).Where(o => o.Name == "LogInternal"))
+                    {
+                        if (logmethod.GetParameters()[2].ParameterType == typeof(Func<object>))
+                        {
+                            harmony.Patch(logmethod, null, new HarmonyMethod(typeof(ConsoleMod).GetMethod(nameof(MonkeyLogToConsole), BindingFlags.Public | BindingFlags.Static)));
+                        }
+                        else if (logmethod.GetParameters()[2].ParameterType == typeof(IEnumerable<Func<object>>))
+                        {
+                            harmony.Patch(logmethod, null, new HarmonyMethod(typeof(ConsoleMod).GetMethod(nameof(MonkeyLogToConsoleMass), BindingFlags.Public | BindingFlags.Static)));
+                        }
+                        else
+                        {
+                            harmony.Patch(logmethod, null, new HarmonyMethod(typeof(ConsoleMod).GetMethod(nameof(LogInternal), BindingFlags.Public | BindingFlags.Static)));
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Error("Failed to patch LogInternal! :(");
+                    System.Console.WriteLine(e.ToString());
+                    throw;
+                }
+                
+                Msg("Hello World! - If you see this in the console, it's working correctly!");
             }
+            else
+            {
+                Error("Failed to allocate console! :(");
+            }
+        }
+        
+        public enum LoggingLevel
+        {
+            Fatal = -3,
+            Error = -2,
+            Warn = -1,
+            Info = 0,
+            Debug = 1,
+            Trace = 2
+        }
+
+        public static void MonkeyLogToConsoleMass(object __0, string __1, IEnumerable<Func<object>> __2)
+        {
+            foreach (var message in __2)
+            {
+                MonkeyLogToConsole(__0, __1, message);
+            }
+        }
+        
+        public static void MonkeyLogToConsole(object __0, string __1, Func<object> __2)
+        {
+            switch ((LoggingLevel)__0)
+            {
+                case LoggingLevel.Debug:
+                case LoggingLevel.Trace:
+                    System.Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
+                case LoggingLevel.Info:
+                    System.Console.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case LoggingLevel.Warn:
+                    System.Console.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case LoggingLevel.Error:
+                case LoggingLevel.Fatal:
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                    break;
+                default:
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                    break;
+            }
+            
+            LogToConsole($"{Enum.GetName(typeof(LoggingLevel), (LoggingLevel)__0)} [{__1}] {__2}");
         }
 
         public static void LogToConsole(string text)
