@@ -1,7 +1,7 @@
 # Console
 
-A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that adds a simple but very useful console mod for RML, with logging mods' logs to separated files as a configurable option (on by default).
-This mod will show a cmd-based console for all your mod's outputs, including errors! Anything that RML would of formatted into the main log, will be in this!
+A [ResoniteModLoader](https://github.com/resonite-modding-group/ResoniteModLoader) mod for [Resonite](https://resonite.com/) that adds a simple but very useful console mod for RML and MonkeyLoader, with logging mods' logs to separated files as a configurable option (on by default).
+This mod will show a cmd-based console for all your mod's outputs, including errors! Anything that RML/Monkey would of formatted into the main log, will be in this!
 
 Pro-Tip: Use XS-Overlay for VR use with it being locked and pinned with half opacity for a nice mod console in VR!
 
