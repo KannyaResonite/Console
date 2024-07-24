@@ -6,6 +6,7 @@
         <RootNamespace>Console</RootNamespace>
         <AssemblyName>!Console</AssemblyName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <LangVersion>10</LangVersion>
         <TargetFramework>net48</TargetFramework>
         <FileAlignment>512</FileAlignment>
         <Deterministic>true</Deterministic>
